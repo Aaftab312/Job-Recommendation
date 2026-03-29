@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recommendation History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <div class="welcome-text">Your past recommendation sessions</div>
+            <a href="/" class="back-btn">Back to Predict</a>
+        </div>
+
+        <div class="hero-section">
+            <h1>📂 Recommendation History</h1>
+            <p class="subtitle">Review your previous searches and job matches</p>
+        </div>
+
+        {% if history %}
+            {% for item in history %}
+            <div class="history-card">
+                <h3>Session #{{ item.session_id }}</h3>
+                <p><strong>Name:</strong> {{ item.name }}</p>
+                <p><strong>Email:</strong> {{ item.email }}</p>
+                <p><strong>Skills Used:</strong> {{ item.skills }}</p>
+                <p><strong>Experience:</strong> {{ item.experience }}</p>
+                <p><strong>Time:</strong> {{ item.session_time }}</p>
+
+                <h4>Recommended Jobs:</h4>
+                {% if item.jobs %}
+                <ul>
+                    {% for job in item.jobs %}
+                    <li>{{ job.job_title }} — <strong>{{ job.score }}%</strong></li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No strong recommendations saved for this session.</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+        <div class="results">
+            <p>No recommendation history found.</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>💼 AI Job Recommendation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <div class="container">
+
+        <div class="top-bar">
+            <div class="welcome-text">Welcome, <strong>{{ username }}</strong></div>
+            <a href="/logout" class="back-btn">Logout</a>
+        </div>
+
+        <div class="hero-section">
+            <h1>AI Powered Job Recommendation System</h1>
+            <p class="subtitle">Find the best jobs based on your skills, experience, and resume intelligence</p>
+        </div>
+
+        <form id="jobForm" action="/predict" method="post" class="job-form" enctype="multipart/form-data">
+            <label for="experience">Experience</label>
+            <input id="experience" type="text" name="experience" placeholder="e.g. 2" required />
+
+            <label for="skills">Skills</label>
+            <input id="skills" type="text" name="skills" placeholder="Python, SQL, Machine Learning" />
+            <small class="hint">Enter skills separated by commas or upload your resume below.</small>
+
+            <label for="resume">Upload Resume</label>
+            <input id="resume" type="file" name="resume" accept=".pdf,.txt" />
+            <small class="hint">Optional: the system will extract skills automatically using NLP.</small>
+
+            <button type="submit" id="predictBtn">Get Recommendations</button>
+        </form>
+
+        <div class="links">
+            <a href="/history">View My Recommendation History</a>
+        </div>
+
+        {% if error or manual_skills or resume_skills or extracted_skills or results is defined %}
+        <div id="results-section" class="results-section">
+
+            {% if error %}
+            <div class="results">
+                <p class="bad">{{ error }}</p>
+            </div>
+            {% endif %}
+
+            {% if manual_skills %}
+            <div class="results">
+                <p><strong>Manual Skills:</strong> {{ manual_skills }}</p>
+            </div>
+            {% endif %}
+
+            {% if resume_skills %}
+            <div class="results">
+                <p><strong>Resume Skills:</strong> {{ resume_skills }}</p>
+            </div>
+            {% endif %}
+
+            {% if extracted_skills %}
+            <div class="results">
+                <p><strong>Final Used Skills:</strong> {{ extracted_skills }}</p>
+            </div>
+            {% endif %}
+
+            {% if results and results|length > 0 %}
+            <div class="results">
+                <h2>Top Recommended Jobs</h2>
+
+                {% for job in results %}
+                <div class="job-card">
+                    <div class="job-header">
+                        <h3>{{ job.job_title }}</h3>
+                        <span class="score-badge">{{ job.score }}%</span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" data-score="{{ job.score }}"></div>
+                    </div>
+                    <script>
+                        document.querySelectorAll(".progress-fill").forEach(bar => {
+                            const score = bar.getAttribute("data-score");
+                            bar.style.width = score + "%";
+                     });
+                    </script>
+
+                    <p><strong>Skills Required:</strong> {{ job.skills_required }}</p>
+
+                    <p>
+                        <strong>Matched Skills:</strong>
+                        {% if job.matched_skills %}
+                            <span class="good">{{ job.matched_skills | join(", ") }}</span>
+                        {% else %}
+                            None
+                        {% endif %}
+                    </p>
+
+                    <p>
+                        <strong>Missing Skills:</strong>
+                        {% if job.missing_skills %}
+                            <span class="bad">{{ job.missing_skills | join(", ") }}</span>
+                        {% else %}
+                            None
+                        {% endif %}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        {% if job.score >= 70 %}
+                            <span class="excellent">Excellent Match</span>
+                        {% elif job.score >= 40 %}
+                            <span class="good-match">Good Match</span>
+                        {% else %}
+                            <span class="low-match">Low Match</span>
+                        {% endif %}
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% elif results is defined and results|length == 0 %}
+            <div class="results">
+                <p>No strong job matches found.</p>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <div id="toast-container"></div>
+    <div id="flash-data" style="display: none;">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash-item"
+             data-category="{{ category }}"
+             data-message="{{ message | e }}">
+        </div>
+      {% endfor %}
+    {% endwith %}
+</div>
+
+    <script>
+    const jobForm = document.getElementById("jobForm");
+    const predictBtn = document.getElementById("predictBtn");
+
+    if (jobForm && predictBtn) {
+        jobForm.addEventListener("submit", function () {
+            predictBtn.innerText = "Generating...";
+            predictBtn.disabled = true;
+        });
+    }
+
+    window.onload = function () {
+        const resultsSection = document.getElementById("results-section");
+        if (resultsSection) {
+            resultsSection.scrollIntoView({ behavior: "smooth" });
+        }
+
+        const container = document.getElementById("toast-container");
+        const flashItems = document.querySelectorAll(".flash-item");
+
+        flashItems.forEach(function (item) {
+            const category = item.dataset.category;
+            const message = item.dataset.message;
+
+            const toast = document.createElement("div");
+            toast.className = "toast " + (category === "error" ? "toast-error" : "toast-success");
+            toast.innerText = message;
+
+            container.appendChild(toast);
+
+            setTimeout(function () {
+                toast.classList.add("hide");
+                setTimeout(function () {
+                    toast.remove();
+                }, 500);
+            }, 3000);
+        });
+    };
+</script>
+</body>
+</html>
