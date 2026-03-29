@@ -54,6 +54,7 @@ project/
 
 ├── insert__jobs.py
 │
+
 ├── templates/
 
 ├── static/
@@ -119,6 +120,9 @@ python app.py
 
 ---
 
+
+---
+
 ## 📧 Email Feature
 
 The password reset feature requires a valid Gmail App Password.
@@ -128,12 +132,20 @@ The password reset feature requires a valid Gmail App Password.
 
 ---
 
-## 🎥 Demo Video
 
-👉 Add your Google Drive / YouTube link here
-
----
 
 ## 🔐 Security Note
 
-Sensitive information like email credentials is stored in a `.env` file and excluded using `.
+Sensitive information like email credentials is stored in a `.env` file and excluded using `.gitignore` to ensure security and follow best practices.
+
+---
+
+## 👨‍💻 Author
+
+**Aaftab**
+
+---
+
+## 📌 Conclusion
+
+This project demonstrates how Machine Learning can be integrated into a full-stack web application to provide intelligent job recommendations and improve user decision-making.
