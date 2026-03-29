@@ -1,0 +1,12 @@
+Flask
+Flask-Mail
+pandas
+numpy
+scikit-learn
+spacy
+rapidfuzz
+PyPDF2
+python-dotenv
+Werkzeug
+itsdangerous
+en-core-web-sm
