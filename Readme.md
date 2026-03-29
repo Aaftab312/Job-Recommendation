@@ -57,19 +57,3 @@ The system uses Natural Language Processing techniques for recommendation:
 - job_id
 - score
 
-## Project Structure
-```text
-Job-Recommendation/
-│
-├── app.py
-├── create_db.py
-├── insert_jobs.py
-├── jobs_dataset_1000.csv
-├── job.db
-│
-├── templates/
-│   ├── index.html
-│   └── history.html
-│
-└── static/
-    └── style.css
