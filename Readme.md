@@ -53,7 +53,7 @@ project/
 ├── create_db.py
 
 ├── insert__jobs.py
-│
+
 
 ├── templates/
 
@@ -108,6 +108,7 @@ python model.py
 ### 5. Setup database
 
 python create_db.py
+
 python insert__jobs.py
 
 
