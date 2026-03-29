@@ -41,14 +41,21 @@ An AI-powered web application that recommends jobs based on user skills using Ma
 project/
 │
 ├── app.py
+
 ├── model.py
+
 ├── model.pkl
+
 ├── requirements.txt
+
 ├── .env.example
+
 ├── create_db.py
+
 ├── insert__jobs.py
 │
 ├── templates/
+
 ├── static/
 
 
@@ -80,7 +87,9 @@ Create a `.env` file in the root directory and add:
 MAIL_USERNAME=your_email@gmail.com
 
 MAIL_PASSWORD=your_app_password
+
 SECRET_KEY=your_secret_key
+
 SECURITY_PASSWORD_SALT=your_salt
 
 
