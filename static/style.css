@@ -302,7 +302,7 @@ button:disabled {
     align-items: center;
 }
 
-.auth-card h1 {
+.auth-card h2 {
     text-align: center;
     color: #1f4e79;
     margin-bottom: 10px;
