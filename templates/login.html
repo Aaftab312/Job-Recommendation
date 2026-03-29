@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
+
 <body>
     <div class="auth-card">
 
-
+        <h1>AI Powered Job Recommendation System</h1>
         <h1>Login</h1>
         <p class="subtitle">Access your personalized recommendation dashboard</p>
 
@@ -24,60 +26,46 @@
         </form>
 
         <div class="links">
-            <a href="/signup">Create new account</a><br><br>
-            <a href="/forgot-password">Forgot Password?</a>
+            # <p>Don't have an account? <a href="/signup">Create one</a></p>
+            <p><a href="/forgot-password">Forgot your password?</a></p>
         </div>
     </div>
+
     <div id="toast-container"></div>
 
-<div id="flash-data" style="display: none;">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% for category, message in messages %}
-        <div class="flash-item"
-             data-category="{{ category }}"
-             data-message="{{ message | e }}">
+    <div id="flash-data" style="display: none;">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+        <div class="flash-item" data-category="{{ category }}" data-message="{{ message | e }}">
         </div>
-      {% endfor %}
-    {% endwith %}
-</div>
+        {% endfor %}
+        {% endwith %}
+    </div>
+
     <script>
-    const jobForm = document.getElementById("jobForm");
-    const predictBtn = document.getElementById("predictBtn");
+        window.onload = function () {
+            const container = document.getElementById("toast-container");
+            const flashItems = document.querySelectorAll(".flash-item");
 
-    if (jobForm && predictBtn) {
-        jobForm.addEventListener("submit", function () {
-            predictBtn.innerText = "Generating...";
-            predictBtn.disabled = true;
-        });
-    }
+            flashItems.forEach(function (item) {
+                const category = item.dataset.category;
+                const message = item.dataset.message;
 
-    window.onload = function () {
-        const resultsSection = document.getElementById("results-section");
-        if (resultsSection) {
-            resultsSection.scrollIntoView({ behavior: "smooth" });
-        }
+                const toast = document.createElement("div");
+                toast.className = "toast " + (category === "error" ? "toast-error" : "toast-success");
+                toast.innerText = message;
 
-        const container = document.getElementById("toast-container");
-        const flashItems = document.querySelectorAll(".flash-item");
+                container.appendChild(toast);
 
-        flashItems.forEach(function (item) {
-            const category = item.dataset.category;
-            const message = item.dataset.message;
-
-            const toast = document.createElement("div");
-            toast.className = "toast " + (category === "error" ? "toast-error" : "toast-success");
-            toast.innerText = message;
-
-            container.appendChild(toast);
-
-            setTimeout(function () {
-                toast.classList.add("hide");
                 setTimeout(function () {
-                    toast.remove();
-                }, 500);
-            }, 3000);
-        });
-    };
-</script>
+                    toast.classList.add("hide");
+                    setTimeout(function () {
+                        toast.remove();
+                    }, 500);
+                }, 3000);
+            });
+        };
+    </script>
 </body>
+
 </html>

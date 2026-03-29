@@ -299,12 +299,14 @@ button:disabled {
     padding: 30px;
     border-radius: 18px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    align-items: center;
 }
 
 .auth-card h1 {
     text-align: center;
     color: #1f4e79;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 .auth-card .subtitle {
@@ -375,7 +377,7 @@ button:disabled {
     color: white;
     font-weight: 500;
     min-width: 220px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     animation: slideIn 0.3s ease;
 }
 
@@ -398,6 +400,7 @@ button:disabled {
         opacity: 0;
         transform: translateX(50px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);

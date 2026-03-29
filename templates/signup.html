@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign Up</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
+
 <body>
     <div class="auth-card">
 
-        <h1>Create Account</h1>
-        <p class="subtitle">Sign up to get personalized AI job recommendations</p>
+        <h1>AI Powered Job Recommendation System</h1>
+        <h2>Sign Up</h2>
+        <p class="subtitle">Create your account to get personalized job recommendations</p>
 
         <form action="/signup" method="post" class="job-form">
             <label>Username</label>
@@ -25,61 +28,49 @@
             <label>Confirm Password</label>
             <input type="password" name="confirm_password" required />
 
-            <button type="submit">Create Account</button>
+            <button type="submit">Sign Up</button>
         </form>
 
         <div class="links">
-            <a href="/login">Already have an account? Login</a>
+            <p>Already have an account? <a href="/login">Login</a></p>
         </div>
     </div>
+
+    <div id="toast-container"></div>
+
     <div id="flash-data" style="display: none;">
-      {% with messages = get_flashed_messages(with_categories=true) %}
-       {% for category, message in messages %}
-        <div class="flash-item"
-             data-category="{{ category }}"
-             data-message="{{ message | e }}">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% for category, message in messages %}
+        <div class="flash-item" data-category="{{ category }}" data-message="{{ message | e }}">
         </div>
-      {% endfor %}
-     {% endwith %}
+        {% endfor %}
+        {% endwith %}
     </div>
+
     <script>
-    const jobForm = document.getElementById("jobForm");
-    const predictBtn = document.getElementById("predictBtn");
+        window.onload = function () {
+            const container = document.getElementById("toast-container");
+            const flashItems = document.querySelectorAll(".flash-item");
 
-    if (jobForm && predictBtn) {
-        jobForm.addEventListener("submit", function () {
-            predictBtn.innerText = "Generating...";
-            predictBtn.disabled = true;
-        });
-    }
+            flashItems.forEach(function (item) {
+                const category = item.dataset.category;
+                const message = item.dataset.message;
 
-    window.onload = function () {
-        const resultsSection = document.getElementById("results-section");
-        if (resultsSection) {
-            resultsSection.scrollIntoView({ behavior: "smooth" });
-        }
+                const toast = document.createElement("div");
+                toast.className = "toast " + (category === "error" ? "toast-error" : "toast-success");
+                toast.innerText = message;
 
-        const container = document.getElementById("toast-container");
-        const flashItems = document.querySelectorAll(".flash-item");
+                container.appendChild(toast);
 
-        flashItems.forEach(function (item) {
-            const category = item.dataset.category;
-            const message = item.dataset.message;
-
-            const toast = document.createElement("div");
-            toast.className = "toast " + (category === "error" ? "toast-error" : "toast-success");
-            toast.innerText = message;
-
-            container.appendChild(toast);
-
-            setTimeout(function () {
-                toast.classList.add("hide");
                 setTimeout(function () {
-                    toast.remove();
-                }, 500);
-            }, 3000);
-        });
-    };
-</script>
+                    toast.classList.add("hide");
+                    setTimeout(function () {
+                        toast.remove();
+                    }, 500);
+                }, 3000);
+            });
+        };
+    </script>
 </body>
+
 </html>
